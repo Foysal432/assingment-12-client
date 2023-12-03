@@ -113,6 +113,56 @@ app.get('/addedclass',async(req,res)=>{
   const result =await addedClassCollection.find().toArray();
   res.send(result)
 })
+// get approved button
+app.get('/addedclass/approved/:status',async(req,res)=>{
+  const status = req.params.status;
+  const query ={status:status}
+  const user = addedClassCollection.find(query);
+  const result = await user.toArray()
+  res.send(result)
+})
+// delete added class
+
+app.delete('/addedclass/:id', async (req, res)=>{
+  const id =req.params.id;
+  const query ={ _id: new ObjectId(id) }
+  const result = await addedClassCollection.deleteOne(query);
+  res.send(result);
+})
+
+// update
+// app.put('/update/:id',async(req,res)=>{
+//   const id =req.params.id;
+//   const filter ={_id: new ObjectId(id)}
+//   const options ={upsert:true};
+//   const updateditem = req.body;
+//   const iteam ={
+//     $set:{
+//       email:updateditem.email,
+//       name:updateditem.name,
+//       photo:updateditem.photo,
+//       title:updateditem.title,
+//       price:updateditem.price,
+//       description:updateditem.description,
+//     }
+//   }
+//   const result =await addedClassCollection.updateOne(filter,iteam,options);
+//   res.send(result)
+// })
+
+// make approved class
+app.patch('/addedclass/approved/:id',async (req,res)=>{
+  const id =req.params.id;
+  const filter ={_id: new ObjectId(id)};
+  const updatedDoc = {
+    $set:{   
+        status:'approved'
+    }
+  }
+  const result =await addedClassCollection.updateOne(filter,updatedDoc)
+  res.send(result);
+  console.log(result);
+})
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
