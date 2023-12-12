@@ -129,26 +129,32 @@ app.delete('/addedclass/:id', async (req, res)=>{
   const result = await addedClassCollection.deleteOne(query);
   res.send(result);
 })
-
+// // update item
+app.get('addedclass/update/:id',async(req,res)=>{
+  const id =req.params.id;
+  const query ={_id:new ObjectId(id)};
+  const user = await addedClassCollection.findOne(query);
+  res.send(user)
+})
 // update
-// app.put('/update/:id',async(req,res)=>{
-//   const id =req.params.id;
-//   const filter ={_id: new ObjectId(id)}
-//   const options ={upsert:true};
-//   const updateditem = req.body;
-//   const iteam ={
-//     $set:{
-//       email:updateditem.email,
-//       name:updateditem.name,
-//       photo:updateditem.photo,
-//       title:updateditem.title,
-//       price:updateditem.price,
-//       description:updateditem.description,
-//     }
-//   }
-//   const result =await addedClassCollection.updateOne(filter,iteam,options);
-//   res.send(result)
-// })
+app.put('/addedclass/update/:id',async(req,res)=>{
+  const id =req.params.id;
+  const filter ={_id: new ObjectId(id)}
+  const options ={upsert:true};
+  const updateditem = req.body;
+  const iteam ={
+    $set:{
+      email:updateditem.email,
+      name:updateditem.name,
+      photo:updateditem.photo,
+      title:updateditem.title,
+      price:updateditem.price,
+      description:updateditem.description,
+    }
+  }
+  const result =await addedClassCollection.updateOne(filter,iteam,options);
+  res.send(result)
+})
 
 // make approved class
 app.patch('/addedclass/approved/:id',async (req,res)=>{
@@ -164,11 +170,11 @@ app.patch('/addedclass/approved/:id',async (req,res)=>{
   console.log(result);
 })
 
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+   
+   
   } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
+ 
+    
   }
 }
 run().catch(console.dir);
